@@ -4,7 +4,7 @@ from Autor import Autor
 class AutorNegocio():
     
     listado_autores = []
-    registro_autores = 'C:/Users/Elia/Documents/GitHub/MantenimientoLibros/listado_autor/listado_autor.xlsx'
+    registro_autores = 'C:/Users/Elia/Desktop/PROGRAMACION/Python/CICLO 3/Educativa/listado_autor/listado_autor.xlsx'
 
     def __init__(self):
         self.listado_autores = []

@@ -1,10 +1,10 @@
 from Categoria import Categoria
 
 # Define la clase NegocioCategoria
-class NegocioCategoria(Categoria):
+class NegocioCategoria():
     
     lista_categorias = []  # Lista para almacenar objetos de la clase Categoria
-    registro_categorias = 'C:/Users/Elia/Documents/GitHub/MantenimientoLibros/listado_autor/listado_categoria.xlsx'
+    registro_categorias = 'C:/Users/Elia/Desktop/PROGRAMACION/Python/CICLO 3/Educativa/listado_autor/listado_categoria.xlsx'
 
 
     # Constructor de la clase NegocioCategoria

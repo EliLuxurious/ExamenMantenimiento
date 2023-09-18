@@ -10,6 +10,7 @@ negocio_autor = AutorNegocio()
 negocio_libro = NegocioLibro()
 negocio_categoria = NegocioCategoria()
 
+
 # Define funciones para realizar acciones en el programa
 
 # Función para registrar autores
@@ -63,10 +64,18 @@ def registrar_libros():
     titulo = input('Ingrese título del libro: ')
     year = input('Ingrese año del libro: ')
     tomo = input('Ingrese tomo del libro: ')
-    autor_codigo = input('Ingrese el código del autor del libro: ') 
-    negocio_libro.registrar_libro(codigo_libro, titulo, year, tomo, autor_codigo)
-    resultado = negocio_libro.guardar_libros()
-    print(resultado)
+    autor_codigo = input('Ingrese el código del autor del libro: ')
+    
+    # Buscar el autor por su código
+    autor = negocio_autor.buscar_autor_por_codigo(autor_codigo)
+    
+    if autor:
+        negocio_libro.registrar_libro(codigo_libro, titulo, year, tomo, autor)
+        resultado = negocio_libro.guardar_libros()
+        print(resultado)
+    else:
+        print("El autor con el código especificado no existe. Por favor, registre al autor primero.")
+
 
 # Función para obtener y listar libros
 def obtener_libros():

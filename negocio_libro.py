@@ -4,7 +4,7 @@ from Libro import Libro
 class NegocioLibro():
 
     listado_libros = []
-    registro_libros = 'C:/Users/Elia/Documents/GitHub/MantenimientoLibros/listado_autor/listado_libro.xlsx'
+    registro_libros = 'C:/Users/Elia/Desktop/PROGRAMACION/Python/CICLO 3/Educativa/listado_autor/listado_libro.xlsx'
 
     def __init__(self):
         self.listado_libros = []

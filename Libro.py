@@ -2,7 +2,7 @@
 from Autor import Autor
 
 # Define la clase Libro, que hereda de Autor (herencia)
-class Libro(Autor):
+class Libro():
     # Atributos de la clase Libro
     codigo_libro = ''  # Codigo del libro
     titulo = ''  # Titulo del libro
