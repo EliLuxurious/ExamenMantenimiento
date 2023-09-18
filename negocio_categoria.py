@@ -2,7 +2,10 @@ from Categoria import Categoria
 
 # Define la clase NegocioCategoria
 class NegocioCategoria(Categoria):
+    
     lista_categorias = []  # Lista para almacenar objetos de la clase Categoria
+    registro_categorias = 'C:/Users/Elia/Documents/GitHub/MantenimientoLibros/listado_autor/listado_categoria.xlsx'
+
 
     # Constructor de la clase NegocioCategoria
     def __init__(self):
