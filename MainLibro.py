@@ -1,12 +1,18 @@
-from Categoria import Categoria  
+# Importa las clases necesarias desde otros archivos
+from Categoria import Categoria
 from negocio_autor import AutorNegocio
 from negocio_libro import NegocioLibro
 from negocio_categoria import NegocioCategoria  # Agregar importación para la clase NegocioCategoria
+from Autor import Autor
 
+# Crea instancias de las clases de negocio
 negocio_autor = AutorNegocio()
 negocio_libro = NegocioLibro()
-negocio_categoria = NegocioCategoria()  # Crear una instancia de NegocioCategoria
+negocio_categoria = NegocioCategoria()
 
+# Define funciones para realizar acciones en el programa
+
+# Función para registrar autores
 def registrar_autores():
     nombre = input('Ingrese nombre: ')
     ap_paterno = input('Ingrese ap_paterno: ')
@@ -19,11 +25,13 @@ def registrar_autores():
     negocio_autor.guardar_autores()
     print(f'Registro exitoso del autor')
 
+# Función para obtener y listar autores
 def obtener_autores():
     listado_autores = negocio_autor.obtener_autores()
     for autor in listado_autores:
         print(autor.imprimir())
 
+# Función para editar autores
 def editar_autores():
     indice = int(input('Ingrese el índice del autor a editar: '))
     nombre = input('Ingrese nombre: ')
@@ -35,6 +43,7 @@ def editar_autores():
     editorial = input('Ingrese editorial: ')
     print(negocio_autor.editar_autores(indice, nombre, ap_paterno, ap_materno, fecha_nacimiento, cod_autor, pais, editorial))
 
+# Función para eliminar un autor por su código
 def eliminar_autor_por_codigo(codigo):
     autor_a_eliminar = None
     for autor in negocio_autor.listado_autores:
@@ -48,7 +57,7 @@ def eliminar_autor_por_codigo(codigo):
     else:
         print(f'Autor con código {codigo} no encontrado.')
 
-
+# Función para registrar libros
 def registrar_libros():
     codigo_libro = input('Ingrese código del libro: ')
     titulo = input('Ingrese título del libro: ')
@@ -59,13 +68,18 @@ def registrar_libros():
     resultado = negocio_libro.guardar_libros()
     print(resultado)
 
+# Función para obtener y listar libros
 def obtener_libros():
     listado_libros = negocio_libro.obtener_libros()
     for libro in listado_libros:
         autor = libro.mostrar_autor()
-        autor_info = f"Autor: {autor.nombre} {autor.ap_paterno} {autor.ap_materno}" if autor else "Autor no asignado"
+        if autor and isinstance(autor, Autor):  # Asegúrate de que Autor es la clase correcta
+            autor_info = f"Autor: {autor.nombre} {autor.ap_paterno} {autor.ap_materno}"
+        else:
+            autor_info = "Autor no asignado"
         print(f"Código del libro: {libro.get_codigo_libro()}\nTítulo: {libro.get_titulo()}\nAño: {libro.get_year()}\nTomo: {libro.get_tomo()}\n{autor_info}\n")
-
+    
+# Función para generar un reporte de libros
 def generar_reporte_libros(listado_libros):
     try:
         with open("reporte_libros.txt", "w") as archivo_reporte:
@@ -83,7 +97,7 @@ def generar_reporte_libros(listado_libros):
     except Exception as e:
         print(f"Error al generar el reporte: {str(e)}")
 
-
+# Función para editar libros
 def editar_libros():
     indice = int(input('Ingrese el índice del libro a editar: '))
     codigo_libro = input('Ingrese código del libro: ')
@@ -99,6 +113,7 @@ def editar_libros():
     else:
         print("El autor no existe. Registre al autor antes de editar el libro.")
 
+# Función para eliminar un libro por su código
 def eliminar_libro_por_codigo(self, codigo_libro):
     libro_a_eliminar = None
     for libro in self.listado_libros:
@@ -112,32 +127,39 @@ def eliminar_libro_por_codigo(self, codigo_libro):
     else:
         print(f'Libro con código {codigo_libro} no encontrado.')
 
+# Función para asignar un libro a una categoría
 def asignar_libro_a_categoria():
     codigo_libro = input('Ingrese código del libro: ')
     categoria_codigo = input('Ingrese código de la categoría: ')
-    
+
+    # Busca el libro por su código y la categoría por su código
     libro = negocio_libro.buscar_libro_por_codigo(codigo_libro)
     categoria = negocio_categoria.buscar_categoria_por_codigo(categoria_codigo)
-    
-    if libro and categoria:
-        libro.asignar_categoria(categoria)
-        resultado = negocio_libro.guardar_libros()
-        print(f'Libro asignado a la categoría "{categoria.get_categoria()}".')
-    else:
-        print("El libro o la categoría no existen.")
 
+    if libro and categoria:
+        # Asigna la categoría al libro
+        libro.asignar_categoria(categoria)
+        print(f'Libro asignado a la categoría "{categoria.get_nombre_categoria()}".')
+    else:
+        print("El libro o la categoría no existen. Verifica los códigos ingresados.")
+
+
+
+# Función para registrar una nueva categoría
 def registrar_categoria():
     cod_categoria = input('Ingrese el código de la categoría: ')
     categoria = input('Ingrese el nombre de la categoría: ')
     negocio_categoria.registrar_categoria(cod_categoria, categoria)
     print(f'Categoría "{categoria}" registrada con éxito.')
 
+# Función para editar una categoría existente
 def editar_categoria():
     cod_categoria = input('Ingrese el código de la categoría que desea editar: ')
     nueva_categoria = input('Ingrese el nuevo nombre de la categoría: ')
     negocio_categoria.editar_categoria(cod_categoria, nueva_categoria)
     print(f'Categoría con código "{cod_categoria}" editada con éxito.')
 
+# Función para listar todas las categorías
 def listar_categorias():
     categorias = negocio_categoria.obtener_categorias()
     if not categorias:
@@ -145,8 +167,17 @@ def listar_categorias():
     else:
         print("Lista de Categorías:")
         for categoria in categorias:
-            print(f"Código de Categoría: {categoria.get_cod_categoria()}, Nombre: {categoria.get_categoria()}")
+            # Obtener información sobre el libro asociado (si existe)
+            libro_asociado = categoria.mostrar_libro()
+            if libro_asociado:
+                libro_info = f"Libro Asociado: Código - {libro_asociado.get_codigo_libro()}, Título - {libro_asociado.get_titulo()}"
+            else:
+                libro_info = "Sin libro asociado"
 
+            print(f"Código de Categoría: {categoria.get_cod_categoria()}, Nombre: {categoria.get_nombre_categoria()}, {libro_info}")
+
+
+# Función para eliminar una categoría por su código
 def eliminar_categoria_por_codigo(self, cod_categoria):
     categoria_a_eliminar = None
     for categoria in self.lista_categorias:
@@ -160,6 +191,7 @@ def eliminar_categoria_por_codigo(self, cod_categoria):
     else:
         print(f'Categoría con código {cod_categoria} no encontrada.')
 
+# Define un diccionario que mapea opciones a funciones
 opciones = {
     "1": registrar_autores,
     "2": obtener_autores,
@@ -177,7 +209,7 @@ opciones = {
     "14": exit
 }
 
-
+# Bucle principal del programa
 while True:
     print("##########################")
     print("Menú:")
@@ -199,14 +231,18 @@ while True:
     
     seleccion = input("Seleccione una opción: ")
 
+    # Verifica si la opción seleccionada está en el diccionario de opciones
     if seleccion in opciones:
+        # Para las opciones 4, 8 y 13 se solicita el código correspondiente
         if seleccion == "4" or seleccion == "8" or seleccion == "13":
             codigo = input("Ingrese el código: ")
             opciones[seleccion](codigo)
+        # La opción 6 muestra los libros y genera el reporte
         elif seleccion == "6":
             obtener_libros()  # Llama a la función para listar libros
             generar_reporte_libros(negocio_libro.obtener_libros())
         else:
+            # Ejecuta la función correspondiente a la opción seleccionada
             opciones[seleccion]()
     else:
         print("Opción no válida. Por favor, seleccione una opción válida.")

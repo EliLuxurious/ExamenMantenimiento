@@ -70,6 +70,7 @@ class NegocioLibro():
                 return libro
         return None
 
+
     def generar_reporte_libros(listado_libros):
         try:
             with open("reporte_libros.txt", "w") as archivo_reporte:
